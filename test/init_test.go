@@ -56,7 +56,7 @@ func init() {
 		AgentId:   config.AgentId,
 	})
 	if err != nil {
-		err = fmt.Errorf("%w", err)
+		err = xerrors.Errorf("%w", err)
 		return
 	}
 	client.SetDingDiReduceFn(func(ctx context.Context, src ...string) (dest map[string]string) {
