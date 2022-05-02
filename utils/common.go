@@ -2,9 +2,14 @@ package utils
 
 import "context"
 
-type GetOauth2Fn func() (accessToken string, err error)
+type Attr string
 
-type DingIdReduceFn func(ctx context.Context, src ...string) (dest map[string]string)
+const (
+	AttrUserid  Attr = "userid"
+	AttrUnionId Attr = "unionId"
+)
+
+type DingIdReduceFn func(ctx context.Context, attr Attr, src ...string) (dest map[string]string)
 
 type DingtalkOptions struct {
 	AppKey    string

@@ -2,9 +2,9 @@ package utils
 
 import "context"
 
-func DingIdReduceBatch(dingIdReduceFn DingIdReduceFn, ctx context.Context, src ...string) (dest map[string]string) {
+func DingIdReduceBatch(dingIdReduceFn DingIdReduceFn, ctx context.Context, attr Attr, src ...string) (dest map[string]string) {
 	if dingIdReduceFn != nil {
-		return dingIdReduceFn(ctx, src...)
+		return dingIdReduceFn(ctx, attr, src...)
 	}
 	dest = make(map[string]string)
 	for _, s := range src {
@@ -13,9 +13,9 @@ func DingIdReduceBatch(dingIdReduceFn DingIdReduceFn, ctx context.Context, src .
 	return
 }
 
-func DingIdReduce(dingIdReduceFn DingIdReduceFn, ctx context.Context, src string) (dest string) {
+func DingIdReduce(dingIdReduceFn DingIdReduceFn, ctx context.Context, attr Attr, src string) (dest string) {
 	if dingIdReduceFn != nil {
-		dest1 := dingIdReduceFn(ctx, src)
+		dest1 := dingIdReduceFn(ctx, attr, src)
 		if len(dest1) > 0 {
 			return dest1[src]
 		}

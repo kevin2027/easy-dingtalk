@@ -73,7 +73,7 @@ func (d *inner) CreateEvent(event *CreateEventRequestEvent) (res *CreateEventRes
 	}
 	attendees = append(attendees, *event.Organizer.Userid)
 	ctx := context.Background()
-	attendeesMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, attendees...)
+	attendeesMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, utils.AttrUserid, attendees...)
 
 	userId := attendeesMap[*event.Organizer.Userid]
 	if userId == "" {
@@ -157,7 +157,7 @@ func (d *inner) UpdateEvent(event *UpdateEventRequestEvent) (err error) {
 	}
 	attendees = append(attendees, *event.Organizer.Userid)
 	ctx := context.Background()
-	attendeesMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, attendees...)
+	attendeesMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, utils.AttrUserid, attendees...)
 
 	userId := attendeesMap[*event.Organizer.Userid]
 	if userId == "" {

@@ -59,11 +59,14 @@ func init() {
 		err = xerrors.Errorf("%w", err)
 		return
 	}
-	client.SetDingDiReduceFn(func(ctx context.Context, src ...string) (dest map[string]string) {
+	client.SetDingDiReduceFn(func(ctx context.Context, attr utils.Attr, src ...string) (dest map[string]string) {
 		dest = make(map[string]string)
 		for _, s := range src {
 			if user, ok := config.Users[s]; ok {
-				dest[s] = user.Userid
+				switch attr {
+				case utils.AttrUserid:
+					dest[s] = user.Userid
+				}
 			}
 		}
 
