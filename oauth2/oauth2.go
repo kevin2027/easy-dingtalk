@@ -13,7 +13,7 @@ import (
 type Oauth2 interface {
 	InitAccessToken(accessToken string, expireIn int64)
 
-	GetAccessToken() (accessToken string, err error)
+	GetAccessToken() (accessToken string, expireIn time.Time, err error)
 	GetAgentId() (agentId int)
 }
 
@@ -55,10 +55,11 @@ func (d *inner) GetAgentId() (agentId int) {
 	return d.agentId
 }
 
-func (d *inner) GetAccessToken() (accessToken string, err error) {
+func (d *inner) GetAccessToken() (accessToken string, expireIn time.Time, err error) {
 	d.RLock()
 	if d.accessToken != "" && d.expireIn.After(time.Now()) {
 		accessToken = d.accessToken
+		expireIn = d.expireIn
 		d.RUnlock()
 		return
 	}
@@ -85,5 +86,6 @@ func (d *inner) GetAccessToken() (accessToken string, err error) {
 	d.accessToken = *res.Body.AccessToken
 	d.expireIn = time.Now().Add(time.Duration(*res.Body.ExpireIn)*time.Second - time.Minute)
 	accessToken = d.accessToken
+	expireIn = d.expireIn
 	return
 }

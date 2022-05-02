@@ -12,7 +12,7 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func TestCreateCalenderV2(t *testing.T) {
+func TestCalenderV2CreateEvent(t *testing.T) {
 	var err error
 	defer deferErr(&err)
 	req := &calendar_v2.CreateEventRequestEvent{
@@ -47,4 +47,58 @@ func TestCreateCalenderV2(t *testing.T) {
 		return
 	}
 	fmt.Printf("%v\n", *util.ToJSONString(res))
+}
+
+func TestCalendarV2UpdateEvent(t *testing.T) {
+	var err error
+	defer deferErr(&err)
+	req := &calendar_v2.UpdateEventRequestEvent{
+		Attendees:   []*calendar_v2.Attendee{},
+		CalendarId:  "",
+		Description: "测试修改日程描述",
+		Start:       calendar_v2.DataTime{Timestamp: tea.Int64(time.Date(2022, 5, 2, 15, 0, 0, 0, time.Local).Unix()), Timezone: tea.String("Asia/Shanghai")},
+		End:         calendar_v2.DataTime{Timestamp: tea.Int64(time.Date(2022, 5, 2, 16, 0, 0, 0, time.Local).Unix()), Timezone: tea.String("Asia/Shanghai")},
+		Summary:     "测试修改日程",
+		EventId:     "9E7066D46163091754634D654103262E",
+		Reminder: &calendar_v2.Reminder{
+			Method:  tea.String("app"),
+			Minutes: tea.Int(5),
+		},
+		Location:  &calendar_v2.Location{Place: tea.String("地点")},
+		Organizer: calendar_v2.Attendee{Userid: tea.String("user0")},
+	}
+	err = client.CalendarV2().UpdateEvent(req)
+	if err != nil {
+		err = xerrors.Errorf("%w", err)
+		return
+	}
+	fmt.Printf("%v\n", "success")
+}
+
+func TestCalendarV2CancelEvent(t *testing.T) {
+	var err error
+	defer deferErr(&err)
+	err = client.CalendarV2().CancelEvent("9E7066D46163091754634D654103262E")
+	if err != nil {
+		err = xerrors.Errorf("%w", err)
+		return
+	}
+	fmt.Printf("%v\n", "success")
+}
+
+func TestCalendarV2AttendeeUpdate(t *testing.T) {
+	var err error
+	defer deferErr(&err)
+	attendeeList := []*calendar_v2.Attendee{
+		{
+			Userid:         tea.String("user1"),
+			AttendeeStatus: tea.String("remove"),
+		},
+	}
+	err = client.CalendarV2().AttendeeUpdate("9E7066D46163091754634D654103262E", attendeeList)
+	if err != nil {
+		err = xerrors.Errorf("%w", err)
+		return
+	}
+	fmt.Printf("%v\n", "success")
 }

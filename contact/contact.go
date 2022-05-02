@@ -26,7 +26,7 @@ type inner struct {
 }
 
 func (d *inner) GetUserInfo(userid string) (res *GetUserInfoResponseResult, err error) {
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return

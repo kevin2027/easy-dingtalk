@@ -78,14 +78,15 @@ func init() {
 		client.Oauth2().InitAccessToken(config.AccessToken, config.ExpireIn)
 	} else {
 		var accessToken string
-		accessToken, err = client.Oauth2().GetAccessToken()
+		var expireIn time.Time
+		accessToken, expireIn, err = client.Oauth2().GetAccessToken()
 		if err != nil {
 			err = xerrors.Errorf("%w", err)
 			return
 		}
 		config.AccessToken = accessToken
 		fmt.Printf("新 accessToken: %s\n", config.AccessToken)
-		config.ExpireIn = now
+		config.ExpireIn = expireIn.Unix()
 		var data []byte
 		data, err = json.MarshalIndent(&config, "", "  ")
 		if err != nil {

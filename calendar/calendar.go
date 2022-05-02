@@ -93,7 +93,7 @@ func (d *inner) CreateEvent(unionId string, req *dingtalkcalendar_1_0.CreateEven
 		err = xerrors.Errorf("%w", err)
 		return
 	}
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return
@@ -146,7 +146,7 @@ func (d *inner) PatchEvent(unionId string, eventId string, req *dingtalkcalendar
 		err = xerrors.Errorf("%w", err)
 		return
 	}
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return
@@ -174,7 +174,7 @@ func (d *inner) DeleteEvent(unionId string, eventId string) (err error) {
 		err = xerrors.Errorf("%w", err)
 		return
 	}
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return
@@ -225,7 +225,7 @@ func (d *inner) AddAttendee(unionId string, eventId string, req *dingtalkcalenda
 		err = xerrors.Errorf("%w", err)
 		return
 	}
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return
@@ -275,7 +275,7 @@ func (d *inner) RemoveAttendee(unionId string, eventId string, req *dingtalkcale
 		err = xerrors.Errorf("%w", err)
 		return
 	}
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return

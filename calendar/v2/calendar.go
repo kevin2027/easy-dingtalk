@@ -16,7 +16,7 @@ type Calendar interface {
 	CreateEvent(event *CreateEventRequestEvent) (res *CreateEventResponseResult, err error)
 	UpdateEvent(event *UpdateEventRequestEvent) (err error)
 	CancelEvent(eventId string) (err error)
-
+	AttendeeUpdate(eventId string, eventAttendees []*Attendee) (err error)
 	SetDingDiReduceFn(fn utils.DingIdReduceFn)
 }
 
@@ -96,7 +96,7 @@ func (d *inner) CreateEvent(event *CreateEventRequestEvent) (res *CreateEventRes
 	event.Attendees = attendeeList
 	event.CalendarId = "primary"
 	event.NotificationType = "NONE"
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return
@@ -179,7 +179,7 @@ func (d *inner) UpdateEvent(event *UpdateEventRequestEvent) (err error) {
 	}
 	event.Attendees = attendeeList
 	event.CalendarId = "primary"
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return
@@ -220,7 +220,7 @@ func (d *inner) UpdateEvent(event *UpdateEventRequestEvent) (err error) {
 }
 
 func (d *inner) CancelEvent(eventId string) (err error) {
-	accessToken, err := d.oauth2.GetAccessToken()
+	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
 		return
@@ -239,6 +239,68 @@ func (d *inner) CancelEvent(eventId string) (err error) {
 	}
 	defer resp.Body.Close()
 
+	bs, err := io.ReadAll(resp.Body)
+	if err != nil {
+		err = xerrors.Errorf("%w", err)
+		return
+	}
+	var result DintalkSuccessResponse
+	err = json.Unmarshal(bs, &result)
+	if err != nil {
+		err = xerrors.Errorf("%w", err)
+		return
+	}
+	if result.Errcode != 0 {
+		err = xerrors.Errorf("%s", result.Errmsg)
+		return
+	}
+	if !result.Success {
+		err = xerrors.Errorf("%s", "success is false")
+		return
+	}
+	return
+}
+
+func (d *inner) AttendeeUpdate(eventId string, eventAtttendees []*Attendee) (err error) {
+	var attendees []string
+	for _, a := range eventAtttendees {
+		attendees = append(attendees, *a.Userid)
+	}
+	ctx := context.Background()
+	attendeesMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, utils.AttrUserid, attendees...)
+
+	attendeeList := make([]*Attendee, 0, len(attendees))
+	for _, attendee := range eventAtttendees {
+		if id, ok := attendeesMap[*attendee.Userid]; ok {
+			if id != "" {
+				attendeeList = append(attendeeList, &Attendee{
+					Userid:         tea.String(id),
+					AttendeeStatus: attendee.AttendeeStatus,
+				})
+			}
+		}
+	}
+	accessToken, _, err := d.oauth2.GetAccessToken()
+	if err != nil {
+		err = xerrors.Errorf("%w", err)
+		return
+	}
+	query := map[string]*string{
+		"access_token": tea.String(accessToken),
+	}
+
+	body := make(map[string]interface{})
+	body["agentid"] = d.oauth2.GetAgentId()
+	body["calendar_id"] = "primary"
+	body["event_id"] = eventId
+	body["attendees"] = attendeeList
+
+	resp, err := utils.DoRquest(http.MethodPost, "/topapi/calendar/v2/attendee/update", query, body)
+	if err != nil {
+		err = xerrors.Errorf("%w", err)
+		return
+	}
+	defer resp.Body.Close()
 	bs, err := io.ReadAll(resp.Body)
 	if err != nil {
 		err = xerrors.Errorf("%w", err)
