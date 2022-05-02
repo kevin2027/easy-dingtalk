@@ -3,12 +3,12 @@ package calendar
 import (
 	"context"
 
-	"github.com/Kevin2027/easy-dingtalk/contact"
-	"github.com/Kevin2027/easy-dingtalk/oauth2"
-	"github.com/Kevin2027/easy-dingtalk/utils"
 	dingtalkcalendar_1_0 "github.com/alibabacloud-go/dingtalk/calendar_1_0"
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
+	"github.com/kevin2027/easy-dingtalk/contact"
+	"github.com/kevin2027/easy-dingtalk/oauth2"
+	"github.com/kevin2027/easy-dingtalk/utils"
 	"golang.org/x/xerrors"
 )
 

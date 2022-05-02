@@ -5,15 +5,15 @@ dingtalk playground
 ## 安装
 
 ```shell
-  go get -u github.com/Kevin2027/easy-dingtalk
+  go get -u github.com/kevin2027/easy-dingtalk
 ```
 
 ## 引入代码
 
 ```go
 import (
-    "github.com/Kevin2027/easy-dingtalk/dingtalk"
-    "github.com/Kevin2027/easy-dingtalk/utils"
+    "github.com/kevin2027/easy-dingtalk/dingtalk"
+    "github.com/kevin2027/easy-dingtalk/utils"
 )
 ```
 

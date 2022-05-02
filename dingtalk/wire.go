@@ -5,12 +5,12 @@
 package dingtalk
 
 import (
-	"github.com/Kevin2027/easy-dingtalk/calendar"
-	calendar_v2 "github.com/Kevin2027/easy-dingtalk/calendar/v2"
-	"github.com/Kevin2027/easy-dingtalk/contact"
-	"github.com/Kevin2027/easy-dingtalk/oauth2"
-	"github.com/Kevin2027/easy-dingtalk/utils"
 	"github.com/google/wire"
+	"github.com/kevin2027/easy-dingtalk/calendar"
+	calendar_v2 "github.com/kevin2027/easy-dingtalk/calendar/v2"
+	"github.com/kevin2027/easy-dingtalk/contact"
+	"github.com/kevin2027/easy-dingtalk/oauth2"
+	"github.com/kevin2027/easy-dingtalk/utils"
 )
 
 func NewDingtalk(opt utils.DingtalkOptions) (Dingtalk, func(), error) {

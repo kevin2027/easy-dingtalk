@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	calendar_v2 "github.com/Kevin2027/easy-dingtalk/calendar/v2"
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
+	calendar_v2 "github.com/kevin2027/easy-dingtalk/calendar/v2"
 
 	"golang.org/x/xerrors"
 )

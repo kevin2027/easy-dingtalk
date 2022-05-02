@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Kevin2027/easy-dingtalk/oauth2"
-	"github.com/Kevin2027/easy-dingtalk/utils"
 	"github.com/alibabacloud-go/tea/tea"
+	"github.com/kevin2027/easy-dingtalk/oauth2"
+	"github.com/kevin2027/easy-dingtalk/utils"
 	"golang.org/x/xerrors"
 )
 

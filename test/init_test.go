@@ -9,8 +9,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/Kevin2027/easy-dingtalk/dingtalk"
-	"github.com/Kevin2027/easy-dingtalk/utils"
+	"github.com/kevin2027/easy-dingtalk/dingtalk"
+	"github.com/kevin2027/easy-dingtalk/utils"
 	"golang.org/x/xerrors"
 )
 

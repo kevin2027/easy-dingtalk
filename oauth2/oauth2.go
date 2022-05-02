@@ -4,9 +4,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Kevin2027/easy-dingtalk/utils"
 	dingtalkoauth2_1_0 "github.com/alibabacloud-go/dingtalk/oauth2_1_0"
 	"github.com/alibabacloud-go/tea/tea"
+	"github.com/kevin2027/easy-dingtalk/utils"
 	"golang.org/x/xerrors"
 )
 

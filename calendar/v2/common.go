@@ -1,6 +1,6 @@
 package calendar_v2
 
-import "github.com/Kevin2027/easy-dingtalk/utils"
+import "github.com/kevin2027/easy-dingtalk/utils"
 
 type DataTime struct {
 	Date      *string `json:"date,omitempty"`
