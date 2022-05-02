@@ -14,7 +14,7 @@ type Oauth2 interface {
 	InitAccessToken(accessToken string, expireIn int64)
 
 	GetAccessToken() (accessToken string, expireIn time.Time, err error)
-	GetAgentId() (agentId int)
+	GetAgentId() (agentId int64)
 }
 
 func NewOuath2(opt utils.DingtalkOptions) (r Oauth2) {
@@ -31,7 +31,7 @@ type inner struct {
 	expireIn    time.Time
 	appKey      string
 	appSecret   string
-	agentId     int
+	agentId     int64
 }
 
 func getClient() (client *dingtalkoauth2_1_0.Client, err error) {
@@ -51,7 +51,7 @@ func (d *inner) InitAccessToken(accessToken string, expireIn int64) {
 
 }
 
-func (d *inner) GetAgentId() (agentId int) {
+func (d *inner) GetAgentId() (agentId int64) {
 	return d.agentId
 }
 

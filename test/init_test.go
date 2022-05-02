@@ -19,7 +19,7 @@ var configData []byte
 var config = struct {
 	AppKey      string `json:"app_key"`
 	AppSecret   string `json:"app_secret"`
-	AgentId     int    `json:"agent_id"`
+	AgentId     int64  `json:"agent_id"`
 	AccessToken string `json:"access_token"`
 	ExpireIn    int64  `json:"expire_in"`
 	Users       map[string]struct {
@@ -61,6 +61,9 @@ func init() {
 	}
 	client.SetDingDiReduceFn(func(ctx context.Context, attr utils.Attr, src ...string) (dest map[string]string) {
 		dest = make(map[string]string)
+		if attr == utils.AttDeptId {
+			return
+		}
 		for _, s := range src {
 			if user, ok := config.Users[s]; ok {
 				switch attr {

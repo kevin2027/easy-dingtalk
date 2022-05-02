@@ -23,7 +23,7 @@ type Calendar interface {
 
 	RemoveAttendee(unionId string, eventId string, req *dingtalkcalendar_1_0.RemoveAttendeeRequest) (err error)
 
-	SetDingDiReduceFn(fn utils.DingIdReduceFn)
+	utils.DingIdReduceAble
 }
 
 func NewCalendar(oauth2 oauth2.Oauth2,
@@ -36,9 +36,9 @@ func NewCalendar(oauth2 oauth2.Oauth2,
 }
 
 type inner struct {
-	oauth2         oauth2.Oauth2
-	contact        contact.Contact
-	dingIdReduceFn utils.DingIdReduceFn
+	oauth2  oauth2.Oauth2
+	contact contact.Contact
+	utils.DingIdReduceStruct
 }
 
 func getClient() (client *dingtalkcalendar_1_0.Client, err error) {
@@ -51,10 +51,6 @@ func getClient() (client *dingtalkcalendar_1_0.Client, err error) {
 	return
 }
 
-func (d *inner) SetDingDiReduceFn(fn utils.DingIdReduceFn) {
-	d.dingIdReduceFn = fn
-}
-
 func (d *inner) CreateEvent(unionId string, req *dingtalkcalendar_1_0.CreateEventRequest) (event *dingtalkcalendar_1_0.CreateEventResponseBody, err error) {
 
 	var attendees []string
@@ -63,7 +59,7 @@ func (d *inner) CreateEvent(unionId string, req *dingtalkcalendar_1_0.CreateEven
 	}
 	attendees = append(attendees, unionId)
 	ctx := context.Background()
-	attendeeMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, utils.AttrUnionId, attendees...)
+	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
 		err = xerrors.Errorf("%s", "attendeeMap is nil")
 		return
@@ -117,7 +113,7 @@ func (d *inner) PatchEvent(unionId string, eventId string, req *dingtalkcalendar
 	}
 	attendees = append(attendees, unionId)
 	ctx := context.Background()
-	attendeeMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, utils.AttrUnionId, attendees...)
+	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
 		err = xerrors.Errorf("%s", "attendeeMap is nil")
 		return
@@ -164,7 +160,7 @@ func (d *inner) PatchEvent(unionId string, eventId string, req *dingtalkcalendar
 
 func (d *inner) DeleteEvent(unionId string, eventId string) (err error) {
 	ctx := context.Background()
-	unionId = utils.DingIdReduce(d.dingIdReduceFn, ctx, utils.AttrUnionId, unionId)
+	unionId = d.Reduce(ctx, utils.AttrUnionId, unionId)
 	if unionId == "" {
 		err = utils.ErrUserIdIsEmpty
 		return
@@ -196,7 +192,7 @@ func (d *inner) AddAttendee(unionId string, eventId string, req *dingtalkcalenda
 	}
 	attendees = append(attendees, unionId)
 	ctx := context.Background()
-	attendeeMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, utils.AttrUnionId, attendees...)
+	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
 		err = xerrors.Errorf("%s", "attendeeMap is nil")
 		return
@@ -246,7 +242,7 @@ func (d *inner) RemoveAttendee(unionId string, eventId string, req *dingtalkcale
 	}
 	attendees = append(attendees, unionId)
 	ctx := context.Background()
-	attendeeMap := utils.DingIdReduceBatch(d.dingIdReduceFn, ctx, utils.AttrUnionId, attendees...)
+	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
 		err = xerrors.Errorf("%s", "attendeeMap is nil")
 		return
