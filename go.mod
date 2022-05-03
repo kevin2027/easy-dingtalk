@@ -8,7 +8,7 @@ require (
 	github.com/alibabacloud-go/tea v1.1.17
 	github.com/alibabacloud-go/tea-utils v1.4.3
 	github.com/google/wire v0.5.0
-	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543
+	github.com/kevin2027/merrors v0.0.1
 )
 
 require (

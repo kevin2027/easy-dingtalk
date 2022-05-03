@@ -2,6 +2,7 @@ package calendar
 
 import (
 	"context"
+	"fmt"
 
 	dingtalkcalendar_1_0 "github.com/alibabacloud-go/dingtalk/calendar_1_0"
 	util "github.com/alibabacloud-go/tea-utils/service"
@@ -9,7 +10,6 @@ import (
 	"github.com/kevin2027/easy-dingtalk/contact"
 	"github.com/kevin2027/easy-dingtalk/oauth2"
 	"github.com/kevin2027/easy-dingtalk/utils"
-	"golang.org/x/xerrors"
 )
 
 type Calendar interface {
@@ -45,7 +45,7 @@ func getClient() (client *dingtalkcalendar_1_0.Client, err error) {
 	config := utils.GetOpenApiConfig()
 	client, err = dingtalkcalendar_1_0.NewClient(config)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	return
@@ -61,13 +61,13 @@ func (d *inner) CreateEvent(unionId string, req *dingtalkcalendar_1_0.CreateEven
 	ctx := context.Background()
 	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
-		err = xerrors.Errorf("%s", "attendeeMap is nil")
+		err = fmt.Errorf("%s", "attendeeMap is nil")
 		return
 	}
 	if id, ok := attendeeMap[unionId]; ok {
 		unionId = id
 	} else {
-		err = xerrors.Errorf("%w", utils.ErrUserIdIsEmpty)
+		err = fmt.Errorf("%w", utils.ErrUserIdIsEmpty)
 		return
 	}
 
@@ -86,19 +86,19 @@ func (d *inner) CreateEvent(unionId string, req *dingtalkcalendar_1_0.CreateEven
 
 	client, err := getClient()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	createEventHeaders := &dingtalkcalendar_1_0.CreateEventHeaders{}
 	createEventHeaders.XAcsDingtalkAccessToken = tea.String(accessToken)
 	res, err := client.CreateEventWithOptions(tea.String(unionId), tea.String("primary"), req, createEventHeaders, &util.RuntimeOptions{})
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	event = res.Body
@@ -115,13 +115,13 @@ func (d *inner) PatchEvent(unionId string, eventId string, req *dingtalkcalendar
 	ctx := context.Background()
 	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
-		err = xerrors.Errorf("%s", "attendeeMap is nil")
+		err = fmt.Errorf("%s", "attendeeMap is nil")
 		return
 	}
 	if id, ok := attendeeMap[unionId]; ok {
 		unionId = id
 	} else {
-		err = xerrors.Errorf("%w", utils.ErrUserIdIsEmpty)
+		err = fmt.Errorf("%w", utils.ErrUserIdIsEmpty)
 		return
 	}
 
@@ -139,19 +139,19 @@ func (d *inner) PatchEvent(unionId string, eventId string, req *dingtalkcalendar
 	}
 	client, err := getClient()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	headers := &dingtalkcalendar_1_0.PatchEventHeaders{}
 	headers.XAcsDingtalkAccessToken = tea.String(accessToken)
 	res, err := client.PatchEventWithOptions(tea.String(unionId), tea.String("primary"), tea.String(eventId), req, headers, &util.RuntimeOptions{})
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	event = res.Body
@@ -167,19 +167,19 @@ func (d *inner) DeleteEvent(unionId string, eventId string) (err error) {
 	}
 	client, err := getClient()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	headers := &dingtalkcalendar_1_0.DeleteEventHeaders{}
 	headers.XAcsDingtalkAccessToken = tea.String(accessToken)
 	_, err = client.DeleteEventWithOptions(tea.String(unionId), tea.String("primary"), tea.String(eventId), headers, &util.RuntimeOptions{})
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	return
@@ -194,13 +194,13 @@ func (d *inner) AddAttendee(unionId string, eventId string, req *dingtalkcalenda
 	ctx := context.Background()
 	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
-		err = xerrors.Errorf("%s", "attendeeMap is nil")
+		err = fmt.Errorf("%s", "attendeeMap is nil")
 		return
 	}
 	if id, ok := attendeeMap[unionId]; ok {
 		unionId = id
 	} else {
-		err = xerrors.Errorf("%w", utils.ErrUserIdIsEmpty)
+		err = fmt.Errorf("%w", utils.ErrUserIdIsEmpty)
 		return
 	}
 
@@ -218,19 +218,19 @@ func (d *inner) AddAttendee(unionId string, eventId string, req *dingtalkcalenda
 	}
 	client, err := getClient()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	headers := &dingtalkcalendar_1_0.AddAttendeeHeaders{}
 	headers.XAcsDingtalkAccessToken = tea.String(accessToken)
 	_, err = client.AddAttendeeWithOptions(tea.String(unionId), tea.String("primary"), tea.String(eventId), req, headers, &util.RuntimeOptions{})
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	return
@@ -244,13 +244,13 @@ func (d *inner) RemoveAttendee(unionId string, eventId string, req *dingtalkcale
 	ctx := context.Background()
 	attendeeMap := d.ReduceBatch(ctx, utils.AttrUnionId, attendees...)
 	if attendeeMap == nil {
-		err = xerrors.Errorf("%s", "attendeeMap is nil")
+		err = fmt.Errorf("%s", "attendeeMap is nil")
 		return
 	}
 	if id, ok := attendeeMap[unionId]; ok {
 		unionId = id
 	} else {
-		err = xerrors.Errorf("%w", utils.ErrUserIdIsEmpty)
+		err = fmt.Errorf("%w", utils.ErrUserIdIsEmpty)
 		return
 	}
 
@@ -268,19 +268,19 @@ func (d *inner) RemoveAttendee(unionId string, eventId string, req *dingtalkcale
 	}
 	client, err := getClient()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	headers := &dingtalkcalendar_1_0.RemoveAttendeeHeaders{}
 	headers.XAcsDingtalkAccessToken = tea.String(accessToken)
 	_, err = client.RemoveAttendeeWithOptions(tea.String(unionId), tea.String("primary"), tea.String(eventId), req, headers, &util.RuntimeOptions{})
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	return

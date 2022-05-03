@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/kevin2027/easy-dingtalk/message"
-	"golang.org/x/xerrors"
 )
 
 func TestMessageCorpconversationaSyncsendV2(t *testing.T) {
@@ -19,7 +18,7 @@ func TestMessageCorpconversationaSyncsendV2(t *testing.T) {
 	}
 	taskId, err := client.Message().CorpconversationaSyncsendV2([]string{"user0"}, nil, false, msg)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	fmt.Printf("%v\n", taskId)
@@ -37,7 +36,7 @@ func TestMessageCorpconversationaSyncsendV2Markdown(t *testing.T) {
 	}
 	taskId, err := client.Message().CorpconversationaSyncsendV2([]string{"user0"}, nil, false, msg)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	fmt.Printf("%v\n", taskId)

@@ -3,19 +3,19 @@ package message
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
 
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/kevin2027/easy-dingtalk/utils"
-	"golang.org/x/xerrors"
 )
 
 func (d *inner) CorpconversationaSyncsendV2(useridList []string, deptIdList []string, toAllUser bool, msg *MessageRequest) (taskId int, err error) {
 	accessToken, _, err := d.oauth2.GetAccessToken()
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	if len(useridList) > 0 {
@@ -55,15 +55,15 @@ func (d *inner) CorpconversationaSyncsendV2(useridList []string, deptIdList []st
 	query := map[string]*string{
 		"access_token": tea.String(accessToken),
 	}
-	resp, err := utils.DoRquest(http.MethodPost, "/topapi/message/corpconversation/asyncsend_v2", query, body)
+	resp, err := utils.DoRequest(http.MethodPost, "/topapi/message/corpconversation/asyncsend_v2", query, body)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	defer resp.Body.Close()
 	bs, err := io.ReadAll(resp.Body)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	var result struct {
@@ -72,11 +72,11 @@ func (d *inner) CorpconversationaSyncsendV2(useridList []string, deptIdList []st
 	}
 	err = json.Unmarshal(bs, &result)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	if result.Errcode != 0 {
-		err = xerrors.Errorf("%s", result.Errmsg)
+		err = fmt.Errorf("%s", result.Errmsg)
 		return
 	}
 	taskId = result.TaskId

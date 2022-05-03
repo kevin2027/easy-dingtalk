@@ -8,8 +8,6 @@ import (
 	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
 	calendar_v2 "github.com/kevin2027/easy-dingtalk/calendar/v2"
-
-	"golang.org/x/xerrors"
 )
 
 func TestCalenderV2CreateEvent(t *testing.T) {
@@ -43,7 +41,7 @@ func TestCalenderV2CreateEvent(t *testing.T) {
 	}
 	res, err := client.CalendarV2().CreateEvent(req)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	fmt.Printf("%v\n", *util.ToJSONString(res))
@@ -69,7 +67,7 @@ func TestCalendarV2UpdateEvent(t *testing.T) {
 	}
 	err = client.CalendarV2().UpdateEvent(req)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	fmt.Printf("%v\n", "success")
@@ -80,7 +78,7 @@ func TestCalendarV2CancelEvent(t *testing.T) {
 	defer deferErr(&err)
 	err = client.CalendarV2().CancelEvent("9E7066D46163091754634D654103262E")
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	fmt.Printf("%v\n", "success")
@@ -97,7 +95,7 @@ func TestCalendarV2AttendeeUpdate(t *testing.T) {
 	}
 	err = client.CalendarV2().AttendeeUpdate("9E7066D46163091754634D654103262E", attendeeList)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	fmt.Printf("%v\n", "success")

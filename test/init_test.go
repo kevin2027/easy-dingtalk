@@ -11,7 +11,7 @@ import (
 
 	"github.com/kevin2027/easy-dingtalk/dingtalk"
 	"github.com/kevin2027/easy-dingtalk/utils"
-	"golang.org/x/xerrors"
+	"github.com/kevin2027/merrors"
 )
 
 //go:embed .cfg/config.json
@@ -32,7 +32,7 @@ var client dingtalk.Dingtalk
 
 func deferErr(err *error) {
 	if *err != nil {
-		fmt.Printf("%+v\n", *err)
+		fmt.Printf("%+v\n", merrors.String(*err))
 	}
 }
 
@@ -40,14 +40,14 @@ func init() {
 	var err error
 	defer func() {
 		if err != nil {
-			fmt.Printf("%+v\n", err)
+			fmt.Printf("%+v\n", merrors.String(err))
 			os.Exit(1)
 		}
 	}()
 	fmt.Printf("init ....\n")
 	err = json.Unmarshal(configData, &config)
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	client, _, err = dingtalk.NewDingtalk(utils.DingtalkOptions{
@@ -56,7 +56,7 @@ func init() {
 		AgentId:   config.AgentId,
 	})
 	if err != nil {
-		err = xerrors.Errorf("%w", err)
+		err = fmt.Errorf("%w", err)
 		return
 	}
 	client.SetDingDiReduceFn(func(ctx context.Context, attr utils.Attr, src ...string) (dest map[string]string) {
@@ -84,7 +84,7 @@ func init() {
 		var expireIn time.Time
 		accessToken, expireIn, err = client.Oauth2().GetAccessToken()
 		if err != nil {
-			err = xerrors.Errorf("%w", err)
+			err = fmt.Errorf("%w", err)
 			return
 		}
 		config.AccessToken = accessToken
@@ -93,12 +93,12 @@ func init() {
 		var data []byte
 		data, err = json.MarshalIndent(&config, "", "  ")
 		if err != nil {
-			err = xerrors.Errorf("%w", err)
+			err = fmt.Errorf("%w", err)
 			return
 		}
 		err = ioutil.WriteFile(".cfg/config.json", data, 0644)
 		if err != nil {
-			err = xerrors.Errorf("%w", err)
+			err = fmt.Errorf("%w", err)
 			return
 		}
 	}
