@@ -10,6 +10,7 @@ import (
 	"github.com/kevin2027/easy-dingtalk/calendar"
 	"github.com/kevin2027/easy-dingtalk/calendar/v2"
 	"github.com/kevin2027/easy-dingtalk/contact"
+	"github.com/kevin2027/easy-dingtalk/meeting"
 	"github.com/kevin2027/easy-dingtalk/message"
 	"github.com/kevin2027/easy-dingtalk/oauth2"
 	"github.com/kevin2027/easy-dingtalk/utils"
@@ -23,7 +24,8 @@ func NewDingtalk(opt utils.DingtalkOptions) (Dingtalk, func(), error) {
 	calendar_v2Calendar := calendar_v2.NewCalendar(oauth2Oauth2)
 	calendarCalendar := calendar.NewCalendar(oauth2Oauth2, contactContact)
 	messageMessage := message.NewMessage(oauth2Oauth2)
-	dingtalk := newDingtalk(oauth2Oauth2, contactContact, calendar_v2Calendar, calendarCalendar, messageMessage)
+	meetingMeeting := meeting.NewMeeting(oauth2Oauth2)
+	dingtalk := newDingtalk(oauth2Oauth2, contactContact, calendar_v2Calendar, calendarCalendar, messageMessage, meetingMeeting)
 	return dingtalk, func() {
 	}, nil
 }
