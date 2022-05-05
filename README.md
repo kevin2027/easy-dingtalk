@@ -171,6 +171,7 @@ err = client.CalendarV2().CancelEvent("9E7066D46163091754634D654103262E")
 
 #### 修改日程参与者
 
+```go
 attendeeList := []*calendar_v2.Attendee{
   {
    Userid:         tea.String("user1"),
@@ -183,6 +184,7 @@ attendeeList := []*calendar_v2.Attendee{
   return
  }
  fmt.Printf("%v\n", "success")
+```
 
 ### 日程（旧版）
 
