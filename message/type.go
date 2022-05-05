@@ -1,7 +1,7 @@
 package message
 
 type MessageRequest struct {
-	Msgtype    string             `json:"msgtype"`
+	Msgtype    string             `json:"msgtype"` // 消息类型 text｜image | voice | file | link | oa | markdown | action_card
 	Text       *TextMessage       `json:"text,omitempty"`
 	Image      *FileMessage       `json:"image,omitempty"`
 	Voice      *VoiceMessage      `json:"voice,omitempty"`

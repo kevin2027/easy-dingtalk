@@ -2,15 +2,13 @@ package utils
 
 import "context"
 
-type Attr string
-
 const (
-	AttrUserid  Attr = "userid"
-	AttrUnionId Attr = "unionId"
-	AttDeptId   Attr = "deptId"
+	AttrUserid  = "userid"
+	AttrUnionId = "unionId"
+	AttDeptId   = "deptId"
 )
 
-type DingIdReduceFn func(ctx context.Context, attr Attr, src ...string) (dest map[string]string)
+type DingIdReduceFn func(ctx context.Context, attr string, src ...string) (dest map[string]string)
 
 type DingIdReduceAble interface {
 	SetReduceFn(fn DingIdReduceFn)
@@ -24,7 +22,7 @@ func (d *DingIdReduceStruct) SetReduceFn(fn DingIdReduceFn) {
 	d.DingIdReduceFn = fn
 }
 
-func (d *DingIdReduceStruct) ReduceBatch(ctx context.Context, attr Attr, src ...string) (dest map[string]string) {
+func (d *DingIdReduceStruct) ReduceBatch(ctx context.Context, attr string, src ...string) (dest map[string]string) {
 	if d.DingIdReduceFn != nil {
 		return d.DingIdReduceFn(ctx, attr, src...)
 	}
@@ -35,7 +33,7 @@ func (d *DingIdReduceStruct) ReduceBatch(ctx context.Context, attr Attr, src ...
 	return
 }
 
-func (d *DingIdReduceStruct) Reduce(ctx context.Context, attr Attr, src string) (dest string) {
+func (d *DingIdReduceStruct) Reduce(ctx context.Context, attr string, src string) (dest string) {
 	if d.DingIdReduceFn != nil {
 		dest1 := d.DingIdReduceFn(ctx, attr, src)
 		if len(dest1) > 0 {

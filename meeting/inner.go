@@ -26,8 +26,8 @@ func getClient() (client *dingtalkconference_1_0.Client, err error) {
 	return
 }
 
-func (d *inner) CreateVideoConference(userId string, confTitle string, inviteUserIds []string, inviteCaller bool) (res *dingtalkconference_1_0.CreateVideoConferenceResponseBody, err error) {
-	ids := []string{userId}
+func (d *inner) CreateVideoConference(unionId string, confTitle string, inviteUserIds []string, inviteCaller bool) (res *dingtalkconference_1_0.CreateVideoConferenceResponseBody, err error) {
+	ids := []string{unionId}
 	ids = append(ids, inviteUserIds...)
 
 	ctx := context.Background()
@@ -36,8 +36,8 @@ func (d *inner) CreateVideoConference(userId string, confTitle string, inviteUse
 		err = fmt.Errorf("%s", "idMap is nil")
 		return
 	}
-	if id, ok := idMap[userId]; ok {
-		userId = id
+	if id, ok := idMap[unionId]; ok {
+		unionId = id
 	} else {
 		err = fmt.Errorf("%w", utils.ErrUserIdIsEmpty)
 		return
@@ -49,7 +49,7 @@ func (d *inner) CreateVideoConference(userId string, confTitle string, inviteUse
 		}
 	}
 	req := &dingtalkconference_1_0.CreateVideoConferenceRequest{}
-	req.SetUserId(userId)
+	req.SetUserId(unionId)
 	req.SetConfTitle(confTitle)
 	req.SetInviteCaller(inviteCaller)
 	if len(temp) > 0 {

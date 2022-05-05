@@ -7,6 +7,23 @@ import (
 	"github.com/kevin2027/easy-dingtalk/message"
 )
 
+func TestMessageSendToConversation(t *testing.T) {
+	var err error
+	defer deferErr(&err)
+	msg := &message.MessageRequest{
+		Msgtype: "text",
+		Text: &message.TextMessage{
+			Content: "这是一段文本消息",
+		},
+	}
+	receiver, err := client.Message().SendToConversation("user0", 123453556, msg)
+	if err != nil {
+		err = fmt.Errorf("%w", err)
+		return
+	}
+	fmt.Printf("%v\n", receiver)
+}
+
 func TestMessageCorpconversationaSyncsendV2(t *testing.T) {
 	var err error
 	defer deferErr(&err)

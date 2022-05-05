@@ -59,7 +59,7 @@ func init() {
 		err = fmt.Errorf("%w", err)
 		return
 	}
-	client.SetDingDiReduceFn(func(ctx context.Context, attr utils.Attr, src ...string) (dest map[string]string) {
+	client.SetDingDiReduceFn(func(ctx context.Context, attr string, src ...string) (dest map[string]string) {
 		dest = make(map[string]string)
 		if attr == utils.AttDeptId {
 			return

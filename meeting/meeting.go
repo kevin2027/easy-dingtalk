@@ -8,7 +8,7 @@ import (
 
 type Meeting interface {
 	utils.DingIdReduceAble
-	CreateVideoConference(userId string, confTitle string, inviteUserIds []string, inviteCaller bool) (res *dingtalkconference_1_0.CreateVideoConferenceResponseBody, err error)
+	CreateVideoConference(unionId string, confTitle string, inviteUserIds []string, inviteCaller bool) (res *dingtalkconference_1_0.CreateVideoConferenceResponseBody, err error)
 	CloseVideoConference(unionId string, conferenceId string) (err error)
 	QueryConferenceInfoBatch(conferenceIdList []string) (res []*dingtalkconference_1_0.QueryConferenceInfoBatchResponseBodyInfos, err error)
 }
